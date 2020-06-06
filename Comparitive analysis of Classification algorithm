@@ -1,0 +1,60 @@
+SOURCE CODE:
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+df = pd.read_csv (r'C:\Users\sudhu\Downloads\diabetes.csv')
+print (df)
+plt.rcdefaults()
+//DECISION TREE
+X_train, X_test, y_train, y_test = train_test_split(df.loc[:, df.columns != 'Outcome'], df['Outcome'], stratify=df['Outcome'], random_state=50)
+tree = DecisionTreeClassifier(random_state=0)
+tree.fit(X_train, y_train)
+print("Decision tree classifier:")
+print("Accuracy on training set: {:.3f}".format(tree.score(X_train, y_train)))
+print("Accuracy on test set: {:.3f}".format(tree.score(X_test, y_test)))
+//RANDOM FOREST
+print("Random forest classifier:")
+rf = RandomForestClassifier(n_estimators=100, random_state=0)
+rf.fit(X_train, y_train)
+print("Accuracy on training set: {:.3f}".format(rf.score(X_train, y_train)))
+print("Accuracy on test set: {:.3f}".format(rf.score(X_test, y_test)))
+//SUPPORT VECTOR MACHINE
+print("Support Vector Machine")
+svc = SVC()
+svc.fit(X_train, y_train)
+print("Accuracy on training set: {:.2f}".format(svc.score(X_train, y_train)))
+print("Accuracy on test set: {:.2f}".format(svc.score(X_test, y_test)))
+//LOGISTIC REGRESSION
+print("Logistic Regression")
+logreg = LogisticRegression().fit(X_train, y_train)
+logreg001 = LogisticRegression(C=100).fit(X_train, y_train)
+print("Training set accuracy: {:.3f}".format(logreg001.score(X_train, y_train)))
+print("Test set accuracy: {:.3f}".format(logreg001.score(X_test, y_test)))
+//K NEAREST NEIGHBOUR
+print("K Nearest Neighbour")
+knn = KNeighborsClassifier(n_neighbors=9)
+knn.fit(X_train, y_train)
+print('Accuracy of K-NN classifier on training set: {:.2f}'.format(knn.score(X_train, y_train)))
+print('Accuracy of K-NN classifier on test set: {:.2f}'.format(knn.score(X_test, y_test)))
+objects = ('KNN', 'RF', 'LR', 'DT','SVM')
+y_pos = np.arange(len(objects))
+performance = [0.74, 0.755, 0.750, 0.724,0.65]
+plt.bar(y_pos, performance, align='center', width=0.35)
+plt.xticks(y_pos, objects)
+plt.ylabel('Efficiency of testing data')
+plt.xlabel('Algorithm')
+plt.title('Efficiency by algorithm')
+plt.show()
+performance = [0.79,1.000 ,0.780 ,1.000 ,1.00]
+plt.bar(y_pos, performance, align='center', width=0.35)
+plt.xticks(y_pos, objects)
+plt.ylabel('Efficiency of training data')
+plt.xlabel('Algorithm')
+plt.title('Efficiency by algorithm')
+plt.show()
